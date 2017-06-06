@@ -43,7 +43,7 @@ var Engine = (function(global) {
         ctx.textAlign = "center";
         ctx.fillStyle = "#FCD1B1";
         ctx.fillText("^", canvas.width / 2, 28);
-        ctx.fillText("~ ~", canvas.width / 2, 32);
+        ctx.fillText("~~", canvas.width / 2, 32);
         ctx.fillText("(*v*)", canvas.width / 2, 45);
         ctx.fillText("((   ))", canvas.width / 2, 65);
         ctx.fillText("^^", canvas.width / 2, 83);
