@@ -40,13 +40,13 @@ Player.prototype.update = function() {
   allEnemies.forEach(function (currentValue, index, array) {
     if (this.x > currentValue.x && this.x < currentValue.x + 50 && this.y < currentValue.y && this.y > currentValue.y - 80) {
         this.setPosition();
-        this.kissExperience -= 10;
+        this.kissExperience--;
     }
   }, this);
 };
 
 Player.prototype.setPosition = function() {
-    if (this.role === 'princess') {
+    if (this.role === 'admirer') {
         this.x = 0;
         this.y = 83 * 5 - 41;
     } else {
@@ -107,16 +107,16 @@ var player2;
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
     var allowedKeysP1 = {
-        ArrowLeft: 'left',
-        ArrowUp: 'up',
-        ArrowRight: 'right',
-        ArrowDown: 'down'
-    };
-    var allowedKeysP2 = {
         a: 'left',
         w: 'up',
         d: 'right',
         s: 'down'
+    };
+    var allowedKeysP2 = {
+        ArrowLeft: 'left',
+        ArrowUp: 'up',
+        ArrowRight: 'right',
+        ArrowDown: 'down'
     };
 
     player1.handleInput(allowedKeysP1[e.key]);

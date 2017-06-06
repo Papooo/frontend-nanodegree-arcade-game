@@ -24,7 +24,9 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime,
         gameMatchStartTime,
-        now;
+        now,
+        matchPlayingTime = 10000,
+        pointsToWin = 50;
 
     canvas.width = 505;
     canvas.height = 606;
@@ -33,103 +35,96 @@ var Engine = (function(global) {
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
-    function selectGameType() {
-        ctx.fillStyle = "blue";
-        ctx.fillRect(0, 0, canvas.width, canvas.height / 2);
-        ctx.fillStyle = "red";
-        ctx.fillRect(0, canvas.height / 2, canvas.width, canvas.height / 2);
-        ctx.fillStyle = "white";
-        ctx.font = "2em serif";
-        ctx.textAlign = "center";
-        ctx.fillText("1 Player", canvas.width / 2, canvas.height / 4);
-        ctx.fillText("2 Players", canvas.width / 2, (canvas.height / 4) * 3);
-        canvas.addEventListener('click', gameType);
-        //gameTypeSelected = true;
-    }
-
-    function gameType(event) {
-        console.log('Xas ' + event.offsetX + ' Yas ' + event.offsetY);
-        if (event.offsetY < canvas.height / 2) {
-            selectHero();
-            gameTypeSelected = true;
-        } else {
-            selectHeroes();
-            gameTypeSelected = true;
-        }
-        canvas.removeEventListener('click', gameType);
-    }
-
-    // Single player game
-    function selectHero() {
-        ctx.fillStyle = "green";
+    function startGame() {
+        // Draw start screen
+        ctx.fillStyle = "#6C8E7E";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        heroeSelected = true;
+        ctx.font = "1.5em sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#FCD1B1";
+        ctx.fillText("Funny game for 2", canvas.width / 2, 125);
+        ctx.font = "3em georgia";
+        ctx.fillStyle = "#F69B9A";
+        ctx.fillText("Kiss Princess :-*", canvas.width / 2, 200);
+        ctx.font = "1em sans-serif";
+        ctx.fillStyle = "#FCD1B1";
+        ctx.fillText("Click to START the game", canvas.width / 2, 275);
+        ctx.font = "1em sans-serif";
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#FCD1B1";
+        ctx.fillText("PLAYER 1: left A , up W, right D, down S", 30, canvas.height - 60);
+        canvas.addEventListener('click', selectHeroes);
+        ctx.fillText("PLAYER 2: arrow left, arrow up , arrow right, arrow down", 30, canvas.height - 30);
     }
 
     // 2 Players game
     function selectHeroes() {
         var heroes = [
-                'images/char-cat-girl.png',
+                'images/char-green-princess.png',
                 'images/char-horn-girl.png',
                 'images/char-pink-girl.png',
                 'images/char-princess-girl.png',
-                'images/char-boy.png',
-                'images/char-boy.png'
+                'images/char-cat-girl.png',
+                'images/char-princess-poor.png'
             ],
             numRows = 6,
             numCols = 5,
             row, col;
-        ctx.fillStyle = "white";
+        canvas.removeEventListener('click', selectHeroes);
+        ctx.fillStyle = "#6C8E7E";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
                 ctx.drawImage(Resources.get(heroes[row]), col * 101, row * 83);
             }
         }
-        ctx.fillStyle = 'purple';
+        ctx.font = "1.3em sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#FCD1B1";
         ctx.fillText('Select Princess for Player 1', canvas.width / 2, 30);
 
         canvas.addEventListener('click', heroType1);
 
         function heroType1(event) {
-            console.log('Game type Select - roger that');
-              if (event.offsetY < canvas.height / 6) {
+              if (event.offsetY < (canvas.height - 108) / 6 + 54) {
                   player1 = new Player(heroes[0], 'admirer');
-              } else if (event.offsetY < canvas.height / 6 * 2) {
+              } else if (event.offsetY < (canvas.height - 108) / 6 * 2 + 54) {
                   player1 = new Player(heroes[1], 'admirer');
-              } else if (event.offsetY < canvas.height / 6 * 3) {
+              } else if (event.offsetY < (canvas.height - 108) / 6 * 3 + 54) {
                   player1 = new Player(heroes[2], 'admirer');
-              } else if (event.offsetY < canvas.height / 6 * 4) {
+              } else if (event.offsetY < (canvas.height - 108) / 6 * 4 + 54) {
                   player1 = new Player(heroes[3], 'admirer');
-              } else {
+              } else if (event.offsetY < (canvas.height - 108) / 6 * 5 + 54) {
                   player1 = new Player(heroes[4], 'admirer');
+              } else {
+                  player1 = new Player(heroes[5], 'admirer');
               }
             canvas.removeEventListener('click', heroType1);
-            //init();
-            ctx.fillStyle = "white";
+            ctx.fillStyle = "#6C8E7E";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             for (row = 0; row < numRows; row++) {
                 for (col = 0; col < numCols; col++) {
                     ctx.drawImage(Resources.get(heroes[row]), col * 101, row * 83);
                 }
             }
-            ctx.fillStyle = 'purple';
+            ctx.fillStyle = "#FCD1B1";
             ctx.fillText('Select Princess for Player 2', canvas.width / 2, 30);
             canvas.addEventListener('click', heroType2);
         }
 
         function heroType2(event) {
-            console.log('Game type Select - roger that');
-              if (event.offsetY < canvas.height / 6) {
+            if (event.offsetY < (canvas.height - 108) / 6 + 54) {
                   player2 = new Player(heroes[0], 'princess');
-              } else if (event.offsetY < canvas.height / 6 * 2) {
+              } else if (event.offsetY < (canvas.height - 108) / 6 * 2 + 54) {
                   player2 = new Player(heroes[1], 'princess');
-              } else if (event.offsetY < canvas.height / 6 * 3) {
+              } else if (event.offsetY < (canvas.height - 108) / 6 * 3 + 54) {
                   player2 = new Player(heroes[2], 'princess');
-              } else if (event.offsetY < canvas.height / 6 * 4) {
+              } else if (event.offsetY < (canvas.height - 108) / 6 * 4 + 54) {
                   player2 = new Player(heroes[3], 'princess');
-              } else {
+              } else if (event.offsetY < (canvas.height - 108) / 6 * 5 + 54) {
                   player2 = new Player(heroes[4], 'princess');
+              } else {
+                  player2 = new Player(heroes[5], 'princess');
               }
               canvas.removeEventListener('click', heroType2);
             init();
@@ -143,25 +138,47 @@ var Engine = (function(global) {
          * would be the same for everyone (regardless of how fast their
          * computer is) - hurray time!
          */
-            now = Date.now();
-        var dt = (now - lastTime) / 1000.0;
+         now = Date.now();
+         var dt = (now - lastTime) / 1000.0;
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-         if (now - gameMatchStartTime < 30000) {
-             update(dt);
-             render();
-             player1.kiss(player1, player2);
-             lastTime = now;
+         if (player1.kissExperience < pointsToWin && player2.kissExperience < pointsToWin) {
+             if (now - gameMatchStartTime < matchPlayingTime) {
+                 update(dt);
+                 render();
+                 player1.kiss(player1, player2);
+                 lastTime = now;
 
-             /* Use the browser's requestAnimationFrame function to call this
-              * function again as soon as the browser is able to draw another frame.
-              */
-             win.requestAnimationFrame(main);
+                 /* Use the browser's requestAnimationFrame function to call this
+                  * function again as soon as the browser is able to draw another frame.
+                  */
+                 win.requestAnimationFrame(main);
+             } else {
+                 player1.role = player1.role === 'princess' ? 'admirer' : 'princess';
+                 player2.role = player2.role === 'princess' ? 'admirer' : 'princess';
+                 init();
+             }
+         } else if (player1.kissExperience < pointsToWin) {
+             ctx.fillStyle = "#6C8E7E";
+             ctx.fillRect(0, 0, canvas.width, canvas.height);
+             ctx.font = "3em sans-serif";
+             ctx.textAlign = "center";
+             ctx.fillStyle = "#F69B9A";
+             ctx.fillText("Player 2 wins!", canvas.width / 2, canvas.height / 3);
+             ctx.font = "1em sans-serif";
+             ctx.fillStyle = "#FCD1B1";
+             ctx.fillText("Reload the page (F5) to start new game", canvas.width / 2, (canvas.height / 3) * 2);
          } else {
-             player1.role = player1.role === 'princess' ? 'admirer' : 'princess';
-             player2.role = player2.role === 'princess' ? 'admirer' : 'princess';
-             init();
+             ctx.fillStyle = "#6C8E7E";
+             ctx.fillRect(0, 0, canvas.width, canvas.height);
+             ctx.font = "3em sans-serif";
+             ctx.textAlign = "center";
+             ctx.fillStyle = "#F69B9A";
+             ctx.fillText("Player 1 wins!", canvas.width / 2,  canvas.height / 3);
+             ctx.font = "1em sans-serif";
+             ctx.fillStyle = "#FCD1B1";
+             ctx.fillText("Reload the page (F5) to start new game", canvas.width / 2, (canvas.height / 3) * 2);
          }
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -248,14 +265,16 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-        ctx.fillStyle = 'Black';
-        ctx.font = "1em serif";
+        ctx.font = "1em sans-serif";
+        ctx.fillStyle = "#6C8E7E";
         ctx.textAlign = "left";
         ctx.fillText('Player 1 >> ' + player1.kissExperience, 0, 30);
         ctx.textAlign = "right";
         ctx.fillText(player2.kissExperience + ' << Player 2', canvas.width, 30);
+        ctx.font = "2em sans-serif";
+        ctx.fillStyle = "#F69B9A";
         ctx.textAlign = "center";
-        ctx.fillText(((now - gameMatchStartTime) / 1000).toFixed(), canvas.width / 2, 30);
+        ctx.fillText(((matchPlayingTime - (now - gameMatchStartTime)) / 1000).toFixed() + ' s', canvas.width / 2, 30);
 
         renderEntities();
     }
@@ -297,9 +316,11 @@ var Engine = (function(global) {
         'images/char-horn-girl.png',
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-green-princess.png',
+        'images/char-princess-poor.png'
     ]);
-    Resources.onReady(selectGameType);
+    Resources.onReady(startGame);
 
     /* Assign the canvas' context object to the global variable (the window
      * object when run in a browser) so that developers can use it more easily
