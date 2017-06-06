@@ -39,19 +39,27 @@ var Engine = (function(global) {
         // Draw start screen
         ctx.fillStyle = "#6C8E7E";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = "1.5em sans-serif";
+        ctx.font = "1.2em sans-serif";
         ctx.textAlign = "center";
         ctx.fillStyle = "#FCD1B1";
-        ctx.fillText("Funny game for 2", canvas.width / 2, 125);
+        ctx.fillText("^", canvas.width / 2, 28);
+        ctx.fillText("~~", canvas.width / 2, 32);
+        ctx.fillText("(*v*)", canvas.width / 2, 45);
+        ctx.fillText("((   ))", canvas.width / 2, 65);
+        ctx.fillText("^^", canvas.width / 2, 83);
+
+        ctx.fillText("Parrot Games", canvas.width / 2, 100);
+        ctx.font = "1.5em sans-serif";
+        ctx.fillText("Funny game for 2", canvas.width / 2, 205);
         ctx.font = "3em georgia";
         ctx.fillStyle = "#F69B9A";
-        ctx.fillText("Kiss Princess :-*", canvas.width / 2, 200);
+        ctx.fillText("Kiss Princess :-*", canvas.width / 2, 260);
         ctx.font = "1em sans-serif";
         ctx.fillStyle = "#FCD1B1";
-        ctx.fillText("Click to START the game", canvas.width / 2, 275);
+        ctx.fillText("Click to START the game", canvas.width / 2, 310);
         ctx.font = "1em sans-serif";
         ctx.textAlign = "left";
-        ctx.fillStyle = "#FCD1B1";
+        ctx.fillStyle = "#fff";
         ctx.fillText("PLAYER 1: left A , up W, right D, down S", 30, canvas.height - 60);
         canvas.addEventListener('click', selectHeroes);
         ctx.fillText("PLAYER 2: arrow left, arrow up , arrow right, arrow down", 30, canvas.height - 30);

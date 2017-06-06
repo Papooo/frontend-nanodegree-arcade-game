@@ -1,5 +1,11 @@
 body {
     text-align: center;
+    background-color: #6C8E7E;
+}
+canvas {
+    box-shadow: 0 0 15px -3px rgba(0,0,0,0.3);
+    border: 20px solid white;
+    border-radius: 10px;
 }
 canvas:hover {
     cursor: pointer;
