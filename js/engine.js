@@ -47,7 +47,6 @@ var Engine = (function(global) {
         ctx.fillText("(*v*)", canvas.width / 2, 45);
         ctx.fillText("((   ))", canvas.width / 2, 65);
         ctx.fillText("^^", canvas.width / 2, 83);
-
         ctx.fillText("Parrot Games", canvas.width / 2, 100);
         ctx.font = "1.5em sans-serif";
         ctx.fillText("Funny game for 2", canvas.width / 2, 205);
@@ -79,6 +78,8 @@ var Engine = (function(global) {
             numCols = 5,
             row, col;
         canvas.removeEventListener('click', selectHeroes);
+
+        // Draw all princesses for player 1 to choose
         ctx.fillStyle = "#6C8E7E";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         for (row = 0; row < numRows; row++) {
@@ -93,6 +94,7 @@ var Engine = (function(global) {
 
         canvas.addEventListener('click', heroType1);
 
+        // Handle princess selection for Player 1
         function heroType1(event) {
               if (event.offsetY < (canvas.height - 108) / 6 + 54) {
                   player1 = new Player(heroes[0], 'admirer');
@@ -107,7 +109,10 @@ var Engine = (function(global) {
               } else {
                   player1 = new Player(heroes[5], 'admirer');
               }
+
             canvas.removeEventListener('click', heroType1);
+
+            // Draw princesses for Player 2 to choose
             ctx.fillStyle = "#6C8E7E";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             for (row = 0; row < numRows; row++) {
@@ -120,6 +125,7 @@ var Engine = (function(global) {
             canvas.addEventListener('click', heroType2);
         }
 
+        // Handle princess selection for Player 2
         function heroType2(event) {
             if (event.offsetY < (canvas.height - 108) / 6 + 54) {
                   player2 = new Player(heroes[0], 'princess');
@@ -151,8 +157,12 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
+         // Check if someone won already
          if (player1.kissExperience < pointsToWin && player2.kissExperience < pointsToWin) {
+             // No one won - continue game
+             // Check if it is time to revert player roles
              if (now - gameMatchStartTime < matchPlayingTime) {
+                 // Continue game
                  update(dt);
                  render();
                  player1.kiss(player1, player2);
@@ -162,11 +172,13 @@ var Engine = (function(global) {
                   * function again as soon as the browser is able to draw another frame.
                   */
                  win.requestAnimationFrame(main);
+             // Time to change roles
              } else {
                  player1.role = player1.role === 'princess' ? 'admirer' : 'princess';
                  player2.role = player2.role === 'princess' ? 'admirer' : 'princess';
                  init();
              }
+        // Player 2 WINS
          } else if (player1.kissExperience < pointsToWin) {
              ctx.fillStyle = "#6C8E7E";
              ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -177,6 +189,7 @@ var Engine = (function(global) {
              ctx.font = "1em sans-serif";
              ctx.fillStyle = "#FCD1B1";
              ctx.fillText("Reload the page (F5) to start new game", canvas.width / 2, (canvas.height / 3) * 2);
+        // Player 1 WINS
          } else {
              ctx.fillStyle = "#6C8E7E";
              ctx.fillRect(0, 0, canvas.width, canvas.height);

@@ -17,7 +17,6 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-
     this.x = this.x < document.querySelector('canvas').width ? Math.round(this.x + 50 * dt * this.speed) : -100;
 };
 
@@ -29,6 +28,7 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+// Player constructor
 var Player = function(sprite, role) {
     this.sprite = sprite;
     this.kissExperience = 0;
@@ -36,15 +36,18 @@ var Player = function(sprite, role) {
     this.setPosition();
 };
 
+// Check for collision with enemy
+// If true, reset start position and reduce kiss esperience points if
 Player.prototype.update = function() {
-  allEnemies.forEach(function (currentValue, index, array) {
-    if (this.x > currentValue.x && this.x < currentValue.x + 50 && this.y < currentValue.y && this.y > currentValue.y - 80) {
-        this.setPosition();
-        this.kissExperience--;
-    }
-  }, this);
+    allEnemies.forEach(function(currentValue, index, array) {
+        if (this.x > currentValue.x && this.x < currentValue.x + 50 && this.y < currentValue.y && this.y > currentValue.y - 80) {
+            this.setPosition();
+            this.kissExperience -= 10;
+        }
+    }, this);
 };
 
+// Assign start positions for players
 Player.prototype.setPosition = function() {
     if (this.role === 'admirer') {
         this.x = 0;
@@ -55,6 +58,7 @@ Player.prototype.setPosition = function() {
     }
 }
 
+// Render player sprites
 Player.prototype.render = function() {
     if (this.role === 'princess') {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -63,6 +67,8 @@ Player.prototype.render = function() {
     }
 };
 
+// Check if there is collision (kiss) between Players
+// If true, add experience points for admirer.
 Player.prototype.kiss = function(player1, player2) {
     if (player1.x === player2.x && player1.y === player2.y) {
         console.log('KISS');
@@ -78,19 +84,20 @@ Player.prototype.kiss = function(player1, player2) {
 
 };
 
+// Handle movement
 Player.prototype.handleInput = function(direction) {
-  if (direction === 'left' && this.x > 0){
-    this.x -= 101;
-  }
-  if (direction === 'right' && this.x < document.querySelector('canvas').width - 200) {
-    this.x += 101;
-  };
-  if (direction === 'up' && this.y > 0) {
-    this.y -= 83;
-  };
-  if (direction === 'down' && this.y < document.querySelector('canvas').height - 250) {
-    this.y += 83;
-  };
+    if (direction === 'left' && this.x > 0) {
+        this.x -= 101;
+    }
+    if (direction === 'right' && this.x < document.querySelector('canvas').width - 200) {
+        this.x += 101;
+    };
+    if (direction === 'up' && this.y > 0) {
+        this.y -= 83;
+    };
+    if (direction === 'down' && this.y < document.querySelector('canvas').height - 250) {
+        this.y += 83;
+    };
 
 };
 
@@ -118,7 +125,6 @@ document.addEventListener('keyup', function(e) {
         ArrowRight: 'right',
         ArrowDown: 'down'
     };
-
     player1.handleInput(allowedKeysP1[e.key]);
     player2.handleInput(allowedKeysP2[e.key]);
 });
