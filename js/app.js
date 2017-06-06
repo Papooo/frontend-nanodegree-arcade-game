@@ -29,23 +29,53 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function() {
-    this.sprite = 'images/char-boy.png';
-    this.x = 101 * 2;
-    this.y = 83 * 5 - 41;
+var Player = function(sprite, role) {
+    this.sprite = sprite;
+    this.kissExperience = 0;
+    this.role = role;
+    this.setPosition();
 };
 
 Player.prototype.update = function() {
   allEnemies.forEach(function (currentValue, index, array) {
     if (this.x > currentValue.x && this.x < currentValue.x + 50 && this.y < currentValue.y && this.y > currentValue.y - 80) {
-      this.x = 101 * 2;
-      this.y = 83 * 5 - 41;
+        this.setPosition();
+        this.kissExperience -= 10;
     }
   }, this);
 };
 
+Player.prototype.setPosition = function() {
+    if (this.role === 'princess') {
+        this.x = 0;
+        this.y = 83 * 5 - 41;
+    } else {
+        this.x = 101 * 4;
+        this.y = 83 * 5 - 41;
+    }
+}
+
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    if (this.role === 'princess') {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    } else {
+        ctx.drawImage(Resources.get('images/char-boy.png'), this.x, this.y);
+    }
+};
+
+Player.prototype.kiss = function(player1, player2) {
+    if (player1.x === player2.x && player1.y === player2.y) {
+        console.log('KISS');
+        ctx.font = "3em serif";
+        ctx.fillStyle = 'red';
+        ctx.fillText('KISS', document.querySelector('canvas').width / 2, document.querySelector('canvas').height / 2);
+        if (player1.role === 'admirer') {
+            player1.kissExperience++;
+        } else {
+            player2.kissExperience++;
+        }
+    }
+
 };
 
 Player.prototype.handleInput = function(direction) {
@@ -69,19 +99,26 @@ Player.prototype.handleInput = function(direction) {
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [new Enemy(0, 60, 1), new Enemy(101, 140, 2), new Enemy(202, 220, 3), new Enemy(303, 140, 4), new Enemy(404, 60, 5)];
 // Place the player object in a variable called player
-var player = new Player();
-
+var player1;
+var player2;
 
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
+    var allowedKeysP1 = {
+        ArrowLeft: 'left',
+        ArrowUp: 'up',
+        ArrowRight: 'right',
+        ArrowDown: 'down'
+    };
+    var allowedKeysP2 = {
+        a: 'left',
+        w: 'up',
+        d: 'right',
+        s: 'down'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+    player1.handleInput(allowedKeysP1[e.key]);
+    player2.handleInput(allowedKeysP2[e.key]);
 });
