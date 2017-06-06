@@ -96,19 +96,19 @@ var Engine = (function(global) {
 
         // Handle princess selection for Player 1
         function heroType1(event) {
-              if (event.offsetY < (canvas.height - 108) / 6 + 54) {
-                  player1 = new Player(heroes[0], 'admirer');
-              } else if (event.offsetY < (canvas.height - 108) / 6 * 2 + 54) {
-                  player1 = new Player(heroes[1], 'admirer');
-              } else if (event.offsetY < (canvas.height - 108) / 6 * 3 + 54) {
-                  player1 = new Player(heroes[2], 'admirer');
-              } else if (event.offsetY < (canvas.height - 108) / 6 * 4 + 54) {
-                  player1 = new Player(heroes[3], 'admirer');
-              } else if (event.offsetY < (canvas.height - 108) / 6 * 5 + 54) {
-                  player1 = new Player(heroes[4], 'admirer');
-              } else {
-                  player1 = new Player(heroes[5], 'admirer');
-              }
+            if (event.offsetY < (canvas.height - 108) / 6 + 54) {
+                player1 = new Player(heroes[0], 'admirer');
+            } else if (event.offsetY < (canvas.height - 108) / 6 * 2 + 54) {
+                player1 = new Player(heroes[1], 'admirer');
+            } else if (event.offsetY < (canvas.height - 108) / 6 * 3 + 54) {
+                player1 = new Player(heroes[2], 'admirer');
+            } else if (event.offsetY < (canvas.height - 108) / 6 * 4 + 54) {
+                player1 = new Player(heroes[3], 'admirer');
+            } else if (event.offsetY < (canvas.height - 108) / 6 * 5 + 54) {
+                player1 = new Player(heroes[4], 'admirer');
+            } else {
+                player1 = new Player(heroes[5], 'admirer');
+            }
 
             canvas.removeEventListener('click', heroType1);
 
@@ -128,19 +128,19 @@ var Engine = (function(global) {
         // Handle princess selection for Player 2
         function heroType2(event) {
             if (event.offsetY < (canvas.height - 108) / 6 + 54) {
-                  player2 = new Player(heroes[0], 'princess');
-              } else if (event.offsetY < (canvas.height - 108) / 6 * 2 + 54) {
-                  player2 = new Player(heroes[1], 'princess');
-              } else if (event.offsetY < (canvas.height - 108) / 6 * 3 + 54) {
-                  player2 = new Player(heroes[2], 'princess');
-              } else if (event.offsetY < (canvas.height - 108) / 6 * 4 + 54) {
-                  player2 = new Player(heroes[3], 'princess');
-              } else if (event.offsetY < (canvas.height - 108) / 6 * 5 + 54) {
-                  player2 = new Player(heroes[4], 'princess');
-              } else {
-                  player2 = new Player(heroes[5], 'princess');
-              }
-              canvas.removeEventListener('click', heroType2);
+                player2 = new Player(heroes[0], 'princess');
+            } else if (event.offsetY < (canvas.height - 108) / 6 * 2 + 54) {
+                player2 = new Player(heroes[1], 'princess');
+            } else if (event.offsetY < (canvas.height - 108) / 6 * 3 + 54) {
+                player2 = new Player(heroes[2], 'princess');
+            } else if (event.offsetY < (canvas.height - 108) / 6 * 4 + 54) {
+                player2 = new Player(heroes[3], 'princess');
+            } else if (event.offsetY < (canvas.height - 108) / 6 * 5 + 54) {
+                player2 = new Player(heroes[4], 'princess');
+            } else {
+                player2 = new Player(heroes[5], 'princess');
+            }
+            canvas.removeEventListener('click', heroType2);
             init();
         }
     }
@@ -152,55 +152,55 @@ var Engine = (function(global) {
          * would be the same for everyone (regardless of how fast their
          * computer is) - hurray time!
          */
-         now = Date.now();
-         var dt = (now - lastTime) / 1000.0;
+        now = Date.now();
+        var dt = (now - lastTime) / 1000.0;
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-         // Check if someone won already
-         if (player1.kissExperience < pointsToWin && player2.kissExperience < pointsToWin) {
-             // No one won - continue game
-             // Check if it is time to revert player roles
-             if (now - gameMatchStartTime < matchPlayingTime) {
-                 // Continue game
-                 update(dt);
-                 render();
-                 player1.kiss(player1, player2);
-                 lastTime = now;
+        // Check if someone won already
+        if (player1.kissExperience < pointsToWin && player2.kissExperience < pointsToWin) {
+            // No one won - continue game
+            // Check if it is time to revert player roles
+            if (now - gameMatchStartTime < matchPlayingTime) {
+                // Continue game
+                update(dt);
+                render();
+                player1.kiss(player1, player2);
+                lastTime = now;
 
-                 /* Use the browser's requestAnimationFrame function to call this
-                  * function again as soon as the browser is able to draw another frame.
-                  */
-                 win.requestAnimationFrame(main);
-             // Time to change roles
-             } else {
-                 player1.role = player1.role === 'princess' ? 'admirer' : 'princess';
-                 player2.role = player2.role === 'princess' ? 'admirer' : 'princess';
-                 init();
-             }
-        // Player 2 WINS
-         } else if (player1.kissExperience < pointsToWin) {
-             ctx.fillStyle = "#6C8E7E";
-             ctx.fillRect(0, 0, canvas.width, canvas.height);
-             ctx.font = "3em sans-serif";
-             ctx.textAlign = "center";
-             ctx.fillStyle = "#F69B9A";
-             ctx.fillText("Player 2 wins!", canvas.width / 2, canvas.height / 3);
-             ctx.font = "1em sans-serif";
-             ctx.fillStyle = "#FCD1B1";
-             ctx.fillText("Reload the page (F5) to start new game", canvas.width / 2, (canvas.height / 3) * 2);
-        // Player 1 WINS
-         } else {
-             ctx.fillStyle = "#6C8E7E";
-             ctx.fillRect(0, 0, canvas.width, canvas.height);
-             ctx.font = "3em sans-serif";
-             ctx.textAlign = "center";
-             ctx.fillStyle = "#F69B9A";
-             ctx.fillText("Player 1 wins!", canvas.width / 2,  canvas.height / 3);
-             ctx.font = "1em sans-serif";
-             ctx.fillStyle = "#FCD1B1";
-             ctx.fillText("Reload the page (F5) to start new game", canvas.width / 2, (canvas.height / 3) * 2);
-         }
+                /* Use the browser's requestAnimationFrame function to call this
+                 * function again as soon as the browser is able to draw another frame.
+                 */
+                win.requestAnimationFrame(main);
+                // Time to change roles
+            } else {
+                player1.role = player1.role === 'princess' ? 'admirer' : 'princess';
+                player2.role = player2.role === 'princess' ? 'admirer' : 'princess';
+                init();
+            }
+            // Player 2 WINS
+        } else if (player1.kissExperience < pointsToWin) {
+            ctx.fillStyle = "#6C8E7E";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = "3em sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillStyle = "#F69B9A";
+            ctx.fillText("Player 2 wins!", canvas.width / 2, canvas.height / 3);
+            ctx.font = "1em sans-serif";
+            ctx.fillStyle = "#FCD1B1";
+            ctx.fillText("Reload the page (F5) to start new game", canvas.width / 2, (canvas.height / 3) * 2);
+            // Player 1 WINS
+        } else {
+            ctx.fillStyle = "#6C8E7E";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = "3em sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillStyle = "#F69B9A";
+            ctx.fillText("Player 1 wins!", canvas.width / 2, canvas.height / 3);
+            ctx.font = "1em sans-serif";
+            ctx.fillStyle = "#FCD1B1";
+            ctx.fillText("Reload the page (F5) to start new game", canvas.width / 2, (canvas.height / 3) * 2);
+        }
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
          */
