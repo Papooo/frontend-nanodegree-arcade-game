@@ -11,7 +11,7 @@ You can play it on [frontend.fun](http://frontend.fun/)
 
 After game starts Player 1 is given Admirer role (without crown) and tries to kiss Princess (Player 2), Player 2 is Princess and runs from Admirer.
 
-After 30s roles are changed and Player 1 is Princess and Player 2 is admirer.
+After 30s roles are changed and Player 1 is Princess and Player 2 is Admirer.
 
 Get points by kissing Princess. Longer kiss, more points! :-)
 
