@@ -1,6 +1,24 @@
-frontend-nanodegree-arcade-game
+Funny game for 2 - Kiss Princess
 ===============================
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+This is 2 player hotseated game for desktop. Game is funny and shows who is Admirer and who is Princess in your relationship :-).
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+# Try it
+
+You can play it on [frontend.fun](http://frontend.fun/)
+
+# Rules
+
+After game starts Player 1 is given Admirer role (without crown) and tries to kiss Princess (Player 2), Player 2 is Princess and runs from Admirer.
+
+After 30s roles are changed and Player 1 is Princess and Player 2 is admirer.
+
+Get points by kissing proncess. Longer kiss, more points! :-)
+
+Watch out for bugs, -10 points if beaten.
+
+Need 50 points to win.
+
+# Usage #
+
+Simply upload to the server or localy and play with your love or friend or enemy or...
